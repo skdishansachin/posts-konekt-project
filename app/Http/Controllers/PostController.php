@@ -7,12 +7,15 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
     public function index(Request $request): View
     {
+        Gate::authorize('viewAny', Post::class);
+
         return view('posts.index', [
             'posts' => $request->user()->posts()->get(),
         ]);
@@ -20,11 +23,15 @@ class PostController extends Controller
 
     public function create(): View
     {
+        Gate::authorize('create', Post::class);
+
         return view('posts.create');
     }
 
     public function store(StorePostRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Post::class);
+
         $request->user()->posts()->create([
             'title' => $request->title,
             'content' => $request->content,
@@ -33,18 +40,18 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function show(Request $request, Post $post): View
+    public function show(Post $post): View
     {
-        // TODO: Add authorization check
+        Gate::authorize('view', $post);
 
         return view('posts.show', [
             'post' => $post,
         ]);
     }
 
-    public function edit(Request $request, Post $post): View
+    public function edit(Post $post): View
     {
-        // TODO: Add authorization check
+        Gate::authorize('update', $post);
 
         return view('posts.edit', [
             'post' => $post,
@@ -53,7 +60,7 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
-        // TODO: Add authorization check
+        Gate::authorize('update', $post);
 
         $post->update([
             'title' => $request->title,
@@ -65,6 +72,8 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
+        Gate::authorize('delete', $post);
+
         $post->delete();
 
         return redirect(route('posts.index'));

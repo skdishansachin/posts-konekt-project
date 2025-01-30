@@ -9,7 +9,7 @@ class PostPolicy
 {
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     public function view(User $user, Post $post): bool
