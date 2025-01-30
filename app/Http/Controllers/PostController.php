@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Post\StorePostRequest;
+use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -29,5 +30,14 @@ class PostController extends Controller
         ]);
 
         return redirect()->route('posts.index');
+    }
+
+    public function show(Request $request, Post $post): View
+    {
+        // TODO: Add authorization check
+
+        return view('posts.show', [
+            'post' => $post,
+        ]);
     }
 }
