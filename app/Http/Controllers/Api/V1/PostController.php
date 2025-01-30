@@ -14,7 +14,12 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = Post::all();
+        $posts = $request->user()->posts->query();
+        $request->whenHas('title', function (string $title) use ($posts) {
+            $posts->where('title', 'like', "%$title%");
+        }, function () use ($posts) {
+            $posts->get();
+        });
         return new PostCollection($posts);
     }
 
