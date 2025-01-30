@@ -11,6 +11,11 @@
     <p>Created by: {{ $post->user->name }}</p>
     <p>Created at: {{ $post->created_at }}</p>
     <p>Updated at: {{ $post->updated_at }}</p>
+    <form action="{{ route('posts.destroy', $post) }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Delete</button>
+    </form>
     <a href="{{ route('posts.index') }}">Back</a>
 </body>
 </html>
