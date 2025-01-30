@@ -8,10 +8,6 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisterUserController::class, 'create'])->name('register');
     Route::post('register', [RegisterUserController::class, 'store']);
@@ -21,10 +17,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // TODO: Chnage the logout route to POST request
     Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 
-    Route::get('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
+    Route::post('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1')
@@ -38,5 +33,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('dashboard', function () {
-    return 'Dashboard';
+    return 'checkout the /post route';
 })->middleware('auth')->name('dashboard');
