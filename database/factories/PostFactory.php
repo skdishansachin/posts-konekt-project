@@ -15,6 +15,7 @@ class PostFactory extends Factory
             'user_id' => User::factory(),
             'title' => fake()->sentence,
             'content' => fake()->paragraph,
+            'image' => fake()->image(storage_path('images')),
         ];
     }
 }

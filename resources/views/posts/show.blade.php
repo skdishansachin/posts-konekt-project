@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" />
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
     <p>Created by: {{ $post->user->name }}</p>

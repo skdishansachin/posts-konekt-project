@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -32,9 +33,12 @@ class PostController extends Controller
     {
         Gate::authorize('create', Post::class);
 
+        $path = $request->image->store('images', 'public');
+
         $request->user()->posts()->create([
             'title' => $request->title,
             'content' => $request->content,
+            'image' => $path,
         ]);
 
         return redirect()->route('posts.index');
@@ -62,9 +66,17 @@ class PostController extends Controller
     {
         Gate::authorize('update', $post);
 
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($post->image);
+            $path = $request->image->store('images', 'public');
+        } else {
+            $path = $post->image;
+        }
+
         $post->update([
             'title' => $request->title,
             'content' => $request->content,
+            'image' => $path,
         ]);
 
         return redirect(route('posts.show', $post));

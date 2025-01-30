@@ -6,9 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{ route('posts.update', $post) }}"  method="post">
+    <form action="{{ route('posts.update', $post) }}"  method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        <input type="file" name="image" id="image" />
+        @error('image')
+            <div>{{ $message }}</div>
+        @enderror
         <input type="text" name="title" id="title" value="{{ old('title', $post->title) }}" />
         @error('title')
             <div>{{ $message }}</div>

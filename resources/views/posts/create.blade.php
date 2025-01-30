@@ -6,10 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{ route('posts.store') }}" method="post">
+    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="text" name="title" id="title" value="{{ old('title') }}" />
         @error('title')
+            <div>{{ $message }}</div>
+        @enderror
+        <input type="file" name="image" id="image" />
+        @error('image')
             <div>{{ $message }}</div>
         @enderror
         <textarea name="content" id="content" cols="30" rows="10">
