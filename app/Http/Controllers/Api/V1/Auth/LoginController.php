@@ -23,4 +23,11 @@ class LoginController extends Controller
             'token' => $request->user()->createToken('auth-token')->plainTextToken,
         ]);
     }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->noContent();
+    }
 }
