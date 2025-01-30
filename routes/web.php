@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterUserController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,6 +20,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // TODO: Chnage the logout route to POST request
     Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 });
 
 Route::get('dashboard', function () {
