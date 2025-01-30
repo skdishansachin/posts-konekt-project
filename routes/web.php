@@ -16,10 +16,10 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'store']);
 });
 
+Route::post('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
+
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
-
-    Route::post('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1')
