@@ -10,7 +10,7 @@ class EmailVerificationMessageController extends Controller
     public function __invoke(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended();
+            return redirect('/');
         }
 
         return view('auth.verify-email');

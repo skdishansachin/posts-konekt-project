@@ -16,18 +16,14 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'store']);
 });
 
-Route::post('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
-
 Route::middleware('auth')->group(function () {
+    Route::get('verify-email', EmailVerificationMessageController::class)->name('verification.notice');
+    Route::post('email/verify', EmailVerificationNotificationController::class)->name('verification.send');
+    Route::get('email/verify/{id}/{hash}', VerifyEmailController::class)->middleware('signed')->name('verification.verify');
+});
+
+Route::middleware('auth', 'verified')->group(function () {
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
-
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
 
     Route::resource('posts', PostController::class);
 });
@@ -35,7 +31,3 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return redirect()->route('posts.index');
 });
-
-Route::get('dashboard', function () {
-    return redirect()->route('posts.index');
-})->middleware('auth')->name('dashboard');

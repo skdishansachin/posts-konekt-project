@@ -25,7 +25,7 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard');
+        return redirect('/');
     }
 
     public function destroy(): RedirectResponse
@@ -34,6 +34,6 @@ class LoginController extends Controller
 
         // TODO: invalidate and regenerate session
 
-        return redirect()->route('dashboard');
+        return redirect('/');
     }
 }

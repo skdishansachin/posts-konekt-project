@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class EmailVerificationNotificationController extends Controller
 {
-    public function store(Request $request)
+    public function __invoke(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended();
+            return redirect('/');
         }
 
         $request->user()->sendEmailVerificationNotification();
