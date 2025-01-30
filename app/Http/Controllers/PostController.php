@@ -86,6 +86,7 @@ class PostController extends Controller
     {
         Gate::authorize('delete', $post);
 
+        Storage::disk('public')->delete($post->image);
         $post->delete();
 
         return redirect(route('posts.index'));
