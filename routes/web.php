@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
 });
 
+Route::get('/', function () {
+    return redirect()->route('posts.index');
+});
+
 Route::get('dashboard', function () {
-    return 'checkout the /post route';
+    return redirect()->route('posts.index');
 })->middleware('auth')->name('dashboard');
